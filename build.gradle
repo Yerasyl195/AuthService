@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.6'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'kz.aparking'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    runtimeOnly 'org.postgresql:postgresql'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'com.twilio.sdk:twilio:9.0.0'
+    implementation 'com.nexmo:client'
+    //implementation 'com.nexmo:client-legacy'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'com.nexmo:nexmo-spring-boot-starter:1.1.0'
+    implementation 'com.vonage:client:7.3.0'
+//    implementation 'org.springframework.security:spring-security-web:5.6.1'
+//    implementation 'org.springframework.security:spring-security-config:5.6.1'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'javax.servlet:javax.servlet-api:3.1.0'
+//    implementation 'io.jsonwebtoken.jjwt-api'
+//    implementation 'io.jsonwebtoken.jjwt-impl'
+//    implementation 'io.jsonwebtoken.jjwt-jackson'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
