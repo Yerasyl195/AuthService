@@ -37,15 +37,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public User getUserByPhone(String phone) {
-        Optional<User> optionalUser = userRepository.findByPhone(phone);
-        if (optionalUser.isPresent()) {
-            return optionalUser.get();
-        } else {
-            throw new UserNotFoundException("User with phone " + phone + " not found");
-        }
-    }
+//    @Override
+//    public User getUserByPhone(String phone) {
+//        Optional<User> optionalUser = userRepository.findByPhone(phone);
+//        if (optionalUser.isPresent()) {
+//            return optionalUser.get();
+//        } else {
+//            throw new UserNotFoundException("User with phone " + phone + " not found");
+//        }
+//    }
 
     @Override
     public void saveUser(User user) {
@@ -69,18 +69,18 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(existingUser);
     }
     @Override
-    public boolean existsByPhoneNumber(String phoneNumber) {
-        return userRepository.existsByPhoneNumber(phoneNumber);
+    public boolean existsByPhone(String phone) {
+        return userRepository.existsByPhone(phone);
     }
     @Override
-    public User findByPhoneNumber(String phoneNumber) {
-        return userRepository.findByPhoneNumber(phoneNumber);
+    public User findByPhone(String phone) {
+        return userRepository.findByPhone(phone);
     }
     @Override
     public User getCurrentUser() {
         String jwtToken = request.getHeader("Authorization").substring(7);
         String phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);
-        return findByPhoneNumber(phoneNumber);
+        return findByPhone(phoneNumber);
     }
 }
 

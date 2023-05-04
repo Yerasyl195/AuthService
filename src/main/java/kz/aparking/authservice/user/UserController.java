@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping("/byPhone")
     public User getUserByPhone(@RequestParam String phone) {
-        return userService.getUserByPhone(phone);
+        return userService.findByPhone(phone);
     }
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser() {

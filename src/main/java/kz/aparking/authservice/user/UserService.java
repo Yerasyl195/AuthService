@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     User createUser(User user);
     User getUserById(Long id);
-    User getUserByPhone(String phone);
+    //User getUserByPhone(String phone);
     void saveUser(User user);
 
     void updateUser(User user);
 
     void deleteUser(Long userId);
 
-    boolean existsByPhoneNumber(String phoneNumber);
-    User findByPhoneNumber(String phoneNumber);
+    boolean existsByPhone(String phone);
+    User findByPhone(String phone);
     User getCurrentUser();
 }

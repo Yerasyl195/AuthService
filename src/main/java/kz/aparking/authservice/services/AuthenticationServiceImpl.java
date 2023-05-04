@@ -48,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
     @Override
     public String register(User user, String code) {
-        if (userService.existsByPhoneNumber(user.getPhone())) {
+        if (userService.existsByPhone(user.getPhone())) {
             throw new RuntimeException("User with this phone number already exists");
         }
         if (verifyCode(user.getPhone(), code)) {
@@ -61,7 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String login(String phoneNumber, String code) {
-        User user = userService.findByPhoneNumber(phoneNumber);
+        User user = userService.findByPhone(phoneNumber);
         if (user == null) {
             throw new RuntimeException("User with this phone number does not exist");
         }

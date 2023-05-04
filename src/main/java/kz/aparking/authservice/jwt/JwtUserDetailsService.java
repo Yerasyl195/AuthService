@@ -15,10 +15,10 @@ public class JwtUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
-        User user = userService.getUserByPhone(phoneNumber);
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        User user = userService.findByPhone(phone);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with phone number: " + phoneNumber);
+            throw new UsernameNotFoundException("User not found with phone number: " + phone);
         }
         return user;
     }
