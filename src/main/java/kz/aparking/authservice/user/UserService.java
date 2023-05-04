@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    User addUser(User user);
+    User createUser(User user);
     User getUserById(Long id);
     User getUserByPhone(String phone);
     void saveUser(User user);
@@ -12,4 +12,7 @@ public interface UserService {
     void updateUser(User user);
 
     void deleteUser(Long userId);
+
+    boolean existsByPhoneNumber(String phoneNumber);
+    User findByPhoneNumber(String phoneNumber);
 }

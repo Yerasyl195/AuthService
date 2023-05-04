@@ -4,7 +4,6 @@ import com.nexmo.client.NexmoClientException;
 import kz.aparking.authservice.dtos.AuthenticationRequest;
 import kz.aparking.authservice.dtos.VerificationRequest;
 import kz.aparking.authservice.services.AuthenticationService;
-import kz.aparking.authservice.user.User;
 import kz.aparking.authservice.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,7 +23,7 @@ public class AuthenticationController {
     private final UserService userService;
 
     @Autowired
-    public AuthenticationController(AuthenticationService authenticationService,UserService userService) {
+    public AuthenticationController(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
     }
@@ -55,4 +53,23 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody AuthenticationRequest authRequest) {
+        try {
+            String jwtToken = authenticationService.register(authRequest.getUser(), authRequest.getCode());
+            return ResponseEntity.ok(jwtToken);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody AuthenticationRequest authRequest) {
+        try {
+            String jwtToken = authenticationService.login(authRequest.getPhoneNumber(), authRequest.getCode());
+            return ResponseEntity.ok(jwtToken);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

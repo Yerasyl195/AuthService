@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(User user) {
+    public User createUser(User user) {
         return userRepository.save(user);
     }
 
@@ -60,6 +60,14 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
         userRepository.delete(existingUser);
+    }
+    @Override
+    public boolean existsByPhoneNumber(String phoneNumber) {
+        return userRepository.existsByPhoneNumber(phoneNumber);
+    }
+    @Override
+    public User findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber);
     }
 }
 
