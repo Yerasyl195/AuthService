@@ -15,4 +15,5 @@ public interface UserService {
 
     boolean existsByPhoneNumber(String phoneNumber);
     User findByPhoneNumber(String phoneNumber);
+    User getCurrentUser();
 }

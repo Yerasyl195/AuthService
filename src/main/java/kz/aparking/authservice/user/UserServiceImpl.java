@@ -1,5 +1,7 @@
 package kz.aparking.authservice.user;
 
+import jakarta.servlet.http.HttpServletRequest;
+import kz.aparking.authservice.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +10,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private HttpServletRequest request;
     private final UserRepository userRepository;
 
     @Autowired
@@ -68,6 +75,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber);
+    }
+    @Override
+    public User getCurrentUser() {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        String phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);
+        return findByPhoneNumber(phoneNumber);
     }
 }
 

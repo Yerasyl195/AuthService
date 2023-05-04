@@ -1,5 +1,6 @@
 package kz.aparking.authservice.jwt;
 
+import kz.aparking.authservice.logout.TokenBlacklistService;
 import kz.aparking.authservice.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +17,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
-    
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
+
     @Override
     protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, jakarta.servlet.FilterChain filterChain) throws jakarta.servlet.ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
@@ -24,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String phoneNumber = null;
         String jwtToken = null;
 
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ") && !tokenBlacklistService.isBlacklisted(jwtToken)) {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);

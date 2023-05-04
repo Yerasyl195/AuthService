@@ -1,6 +1,7 @@
 package kz.aparking.authservice.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +27,11 @@ public class UserController {
     @GetMapping("/byPhone")
     public User getUserByPhone(@RequestParam String phone) {
         return userService.getUserByPhone(phone);
+    }
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser() {
+        User currentUser = userService.getCurrentUser();
+        return ResponseEntity.ok(currentUser);
     }
 }
 
