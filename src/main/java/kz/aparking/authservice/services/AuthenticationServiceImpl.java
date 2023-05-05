@@ -47,25 +47,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
     @Override
-    public String register(User user, String code) {
+    public String register(User user) {
         if (userService.existsByPhone(user.getPhone())) {
             throw new RuntimeException("User with this phone number already exists");
         }
-        if (verifyCode(user.getPhone(), code)) {
-            User newUser = userService.createUser(user);
-            return jwtTokenUtil.generateToken(newUser.getPhone());
-        } else {
-            throw new RuntimeException("Verification code is incorrect");
-        }
+        User newUser = userService.createUser(user);
+        return jwtTokenUtil.generateToken(newUser.getPhone());
     }
 
     @Override
-    public String login(String phoneNumber, String code) {
-        User user = userService.findByPhone(phoneNumber);
+    public String login(String requestId, String code) {
+        User user = userService.findByPhone(requestId);
         if (user == null) {
             throw new RuntimeException("User with this phone number does not exist");
         }
-        if (verifyCode(phoneNumber, code)) {
+        if (verifyCode(requestId, code)) {
             return jwtTokenUtil.generateToken(user.getPhone());
         } else {
             throw new RuntimeException("Verification code is incorrect");

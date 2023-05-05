@@ -4,6 +4,7 @@ import com.nexmo.client.NexmoClientException;
 import kz.aparking.authservice.dtos.AuthenticationRequest;
 import kz.aparking.authservice.dtos.VerificationRequest;
 import kz.aparking.authservice.services.AuthenticationService;
+import kz.aparking.authservice.user.User;
 import kz.aparking.authservice.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,9 +55,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AuthenticationRequest authRequest) {
+    public ResponseEntity<String> register(@RequestBody User user) {
         try {
-            String jwtToken = authenticationService.register(authRequest.getUser(), authRequest.getCode());
+            String jwtToken = authenticationService.register(user);
             return ResponseEntity.ok(jwtToken);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -64,9 +65,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthenticationRequest authRequest) {
+    public ResponseEntity<String> login(@RequestBody VerificationRequest verificationRequest) {
         try {
-            String jwtToken = authenticationService.login(authRequest.getPhoneNumber(), authRequest.getCode());
+            String jwtToken = authenticationService.login(verificationRequest.getRequestId(), verificationRequest.getCode());
             return ResponseEntity.ok(jwtToken);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
