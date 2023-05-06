@@ -44,7 +44,6 @@ public class AuthenticationController {
         try {
             boolean isVerified = authenticationService.verifyCode(verificationRequest.getRequestId(), verificationRequest.getCode());
             if (isVerified) {
-
                 return ResponseEntity.ok(verificationRequest.getPhoneNumber());
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);

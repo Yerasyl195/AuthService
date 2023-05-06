@@ -3,6 +3,8 @@ package kz.aparking.authservice.user;
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private UserService userService;
     private final UserRepository userRepository;
 
     @Autowired
@@ -24,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        if (userService.existsByPhone(user.getPhone())) {
+            throw new RuntimeException("User with this phone number already exists");
+        }
         return userRepository.save(user);
     }
 
@@ -68,20 +76,37 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
         userRepository.delete(existingUser);
     }
+
     @Override
     public boolean existsByPhone(String phone) {
         return userRepository.existsByPhone(phone);
     }
+
     @Override
     public User findByPhone(String phone) {
         return userRepository.findByPhone(phone);
     }
+
     @Override
     public User getCurrentUser() {
-        String jwtToken = request.getHeader("Authorization").substring(7);
+        String jwtToken = request.getHeader("Authorization");
+        if (jwtToken == null || !jwtToken.startsWith("Bearer ")) {
+            throw new RuntimeException("Invalid or missing Authorization header");
+        }
+        jwtToken = jwtToken.substring(7);
         String phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);
         return findByPhone(phoneNumber);
     }
 }
+//        String jwtToken = request.getHeader("Authorization").substring(7);
+//        String phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);
+//        return findByPhone(phoneNumber);
+//        String jwtToken = request.getHeader("Authorization");
+//        if (jwtToken == null || jwtToken.isEmpty()) {
+//            throw new RuntimeException("Authorization header is missing");
+//        }
+//        String phoneNumber = jwtToken.substring(7);
+//        System.out.printf(phoneNumber);
+//        return findByPhone(phoneNumber);
 
 

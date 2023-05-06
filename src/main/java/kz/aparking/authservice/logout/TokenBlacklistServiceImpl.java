@@ -11,14 +11,29 @@ public class TokenBlacklistServiceImpl implements TokenBlacklistService {
 
     private final Set<String> blacklistedTokens = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
+//    @Override
+//    public void addToBlacklist(String token) {
+//        blacklistedTokens.add(token);
+//    }
     @Override
     public void addToBlacklist(String token) {
-        blacklistedTokens.add(token);
+        if (token != null) {
+            blacklistedTokens.add(token);
+        }
     }
 
+
+//    @Override
+//    public boolean isBlacklisted(String token) {
+//        return blacklistedTokens.contains(token);
+//    }
     @Override
     public boolean isBlacklisted(String token) {
+        if (token == null) {
+            return false;
+        }
         return blacklistedTokens.contains(token);
     }
+
 }
 
