@@ -1,5 +1,6 @@
-package kz.aparking.authservice.user;
+package kz.aparking.authservice.user.jpa;
 
+import kz.aparking.authservice.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

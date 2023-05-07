@@ -29,6 +29,10 @@ public class User implements UserDetails {
     @Column(name = "car")
     private List<String> cars;
 
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<UserOrder> parkingHistory;
+
+
     //private List<ParkingHistory> parkingHistory;
 
     public Long getId() {
