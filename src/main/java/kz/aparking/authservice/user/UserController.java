@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -77,6 +79,22 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
+
+    @GetMapping("/history/{id}")
+    public List<UserOrder> GetParkingHistoryForUser(@PathVariable Long id) {
+        return userService.getUserHistory(id);
+    }
+
+    @GetMapping("/history/{id}/last")
+    public UserOrder getLastOrderForUser(@PathVariable Long id) {
+        return userService.getLastOrderForUser(id);
+    }
+
+    @PostMapping("/history/{id}")
+    public UserOrder addOrderToUserHistory(@PathVariable Long id, @RequestBody UserOrder newOrder) {
+        return userService.addOrderToUserHistory(id, newOrder);
+    }
+
 }
 
 

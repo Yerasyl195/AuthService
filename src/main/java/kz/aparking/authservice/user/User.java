@@ -29,19 +29,13 @@ public class User implements UserDetails {
     @Column(name = "car")
     private List<String> cars;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<UserOrder> parkingHistory;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserOrder> parkingHistory;
 
-
-    //private List<ParkingHistory> parkingHistory;
 
     public Long getId() {
         return id;
     }
-
-//    public List<ParkingHistory> getParkingHistory() {
-//        return parkingHistory;
-//    }
 
     public String getPhone() {
         return phone;
@@ -55,9 +49,16 @@ public class User implements UserDetails {
         return fullName;
     }
 
-    //    public void setParkingHistory(List<ParkingHistory> parkingHistory) {
-//        this.parkingHistory = parkingHistory;
-//    }
+
+    public List<UserOrder> getParkingHistory() {
+        return parkingHistory;
+    }
+
+    public void setParkingHistory(List<UserOrder> parkingHistory) {
+        this.parkingHistory = parkingHistory;
+    }
+
+
     public User(Long id, String phone, String fullName, List<String> cars) {//, List<ParkingHistory> parkingHistory) {
         this.id = id;
         this.phone = phone;
