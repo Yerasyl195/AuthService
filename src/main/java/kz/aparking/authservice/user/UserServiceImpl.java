@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     public UserOrder getLastOrderForUser(Long userId) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-        return orderRepository.findTopByUserOrderByCreatedAtDesc(existingUser);
+        return orderRepository.findTopByUserOrderByStartTimeDesc(existingUser);
     }
 
     @Override
@@ -69,7 +69,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 
         newOrder.setUser(existingUser);
-        newOrder.setCreatedAt();
         return orderRepository.save(newOrder);
     }
 

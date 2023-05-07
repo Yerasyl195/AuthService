@@ -15,16 +15,56 @@ public class UserOrder {
     @JsonIgnore
     private User user;
 
-    private String parkingSpot;
+    private String parkingSpotNumber;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
-    public UserOrder(Long id, User user, String parkingSpotId) {
-        this.id = id;
-        this.user = user;
-        this.parkingSpot = parkingSpotId;
-        setCreatedAt();
+    private String sensorId;
+    private double price;
+    private boolean isPaid;
+
+    public UserOrder(String parkingSpotNumber, LocalDateTime startTime, LocalDateTime endTime, String sensorId, double price, boolean isPaid) {
+        this.parkingSpotNumber = parkingSpotNumber;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.sensorId = sensorId;
+        this.price = price;
+        this.isPaid = isPaid;
+    }
+
+    public String getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double cost) {
+        this.price = cost;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     protected UserOrder() {
@@ -46,20 +86,20 @@ public class UserOrder {
         this.user = user;
     }
 
-    public String getParkingSpot() {
-        return parkingSpot;
+    public String getParkingSpotNumber() {
+        return parkingSpotNumber;
     }
 
-    public void setParkingSpot(String parkingSpot) {
-        this.parkingSpot = parkingSpot;
+    public void setParkingSpotNumber(String parkingSpot) {
+        this.parkingSpotNumber = parkingSpot;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setCreatedAt() {
-        this.createdAt = LocalDateTime.now();
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 }
 
