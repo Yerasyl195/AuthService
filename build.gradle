@@ -33,7 +33,7 @@ dependencies {
 }
 
 bootBuildImage {
-    imageName = 'aibaribray/authservice'
+    imageName = 'authremote'
     pullPolicy = 'IF_NOT_PRESENT'
 }
 
