@@ -23,10 +23,10 @@ public class UserController {
         this.request = request;
     }
 
-    @PostMapping("/addUser")
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
+//    @PostMapping("/addUser")
+//    public User createUser(@RequestBody User user) {
+//        return userService.createUser(user);
+//    }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {

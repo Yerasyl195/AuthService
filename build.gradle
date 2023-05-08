@@ -32,6 +32,12 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 }
 
+bootBuildImage {
+    imageName = 'aibaribray/authservice'
+    pullPolicy = 'IF_NOT_PRESENT'
+}
+
+
 tasks.named('test') {
     useJUnitPlatform()
 }

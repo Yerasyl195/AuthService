@@ -32,7 +32,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserOrder> parkingHistory;
 
-
     public Long getId() {
         return id;
     }
