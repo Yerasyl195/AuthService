@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,7 +24,7 @@ public class AuthenticationController {
     private final UserService userService;
 
     @Autowired
-    public AuthenticationController(AuthenticationService authenticationService,UserService userService) {
+    public AuthenticationController(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
     }
@@ -45,7 +44,6 @@ public class AuthenticationController {
         try {
             boolean isVerified = authenticationService.verifyCode(verificationRequest.getRequestId(), verificationRequest.getCode());
             if (isVerified) {
-
                 return ResponseEntity.ok(verificationRequest.getPhoneNumber());
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -55,4 +53,23 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody User user) {
+        try {
+            String jwtToken = authenticationService.register(user);
+            return ResponseEntity.ok(jwtToken);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody VerificationRequest verificationRequest) {
+        try {
+            String jwtToken = authenticationService.login(verificationRequest.getRequestId(), verificationRequest.getCode());
+            return ResponseEntity.ok(jwtToken);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

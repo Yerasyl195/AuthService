@@ -8,6 +8,13 @@ group = 'kz.aparking'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'kz.aparking.MainApplication'
+    }
+}
+
+
 repositories {
     mavenCentral()
 }
@@ -21,19 +28,22 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.twilio.sdk:twilio:9.0.0'
     implementation 'com.nexmo:client'
-    //implementation 'com.nexmo:client-legacy'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.nexmo:nexmo-spring-boot-starter:1.1.0'
     implementation 'com.vonage:client:7.3.0'
-//    implementation 'org.springframework.security:spring-security-web:5.6.1'
-//    implementation 'org.springframework.security:spring-security-config:5.6.1'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-//    implementation 'javax.servlet:javax.servlet-api:3.1.0'
-//    implementation 'io.jsonwebtoken.jjwt-api'
-//    implementation 'io.jsonwebtoken.jjwt-impl'
-//    implementation 'io.jsonwebtoken.jjwt-jackson'
+    implementation 'javax.servlet:javax.servlet-api'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 }
+
+bootBuildImage {
+    imageName = 'prod/joindb'
+    pullPolicy = 'IF_NOT_PRESENT'
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()

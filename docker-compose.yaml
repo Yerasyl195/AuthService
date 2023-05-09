@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  auth-service:
+    restart: always
+    image: aibaribray/joindb:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+
+  database:
+    image: postgres
+    platform: linux/x86_64
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1402
+    ports:
+      - "5432:5432"
