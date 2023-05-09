@@ -1,11 +1,19 @@
 version: '3.3'
 services:
   auth-service:
-    image: library/authremote:latest
+#    restart: always
+    image: test/joindblocal:latest
     ports:
       - "8080:8080"
-    networks:
-      - auth-service
+    depends_on:
+      - database
 
-networks:
-  auth-service:
+  database:
+    image: postgres:latest
+    platform: linux/x86_64
+#    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1402
+    ports:
+      - "5432:5432"

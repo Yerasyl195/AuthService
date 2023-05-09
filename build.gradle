@@ -33,7 +33,7 @@ dependencies {
 }
 
 bootBuildImage {
-    imageName = 'authremote'
+    imageName = 'test/joindblocal'
     pullPolicy = 'IF_NOT_PRESENT'
 }
 
