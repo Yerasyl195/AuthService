@@ -33,7 +33,7 @@ dependencies {
 }
 
 bootBuildImage {
-    imageName = 'test/joindblocal'
+    imageName = 'prod/joindb'
     pullPolicy = 'IF_NOT_PRESENT'
 }
 

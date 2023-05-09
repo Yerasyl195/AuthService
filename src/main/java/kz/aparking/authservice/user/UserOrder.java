@@ -14,40 +14,37 @@ public class UserOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
-
     private String parkingSpotNumber;
-
     @Column(nullable = false)
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-
-    private String sensorId;
-    private double price;
+    private String price;
     private boolean isPaid;
+    private String carNumber;
 
-    public UserOrder(String parkingSpotNumber, LocalDateTime startTime, LocalDateTime endTime, String sensorId, double price, boolean isPaid) {
+    public UserOrder(String parkingSpotNumber, LocalDateTime startTime, LocalDateTime endTime, String price, boolean isPaid, String carNumber) {
         this.parkingSpotNumber = parkingSpotNumber;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.sensorId = sensorId;
         this.price = price;
         this.isPaid = isPaid;
+        this.carNumber = carNumber;
     }
 
-    public String getSensorId() {
-        return sensorId;
+    public String getCarNumber() {
+        return carNumber;
     }
 
-    public void setSensorId(String sensorId) {
-        this.sensorId = sensorId;
+    public void setCarNumber(String carNumber) {
+        this.carNumber = carNumber;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double cost) {
-        this.price = cost;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public boolean isPaid() {
