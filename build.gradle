@@ -8,6 +8,13 @@ group = 'kz.aparking'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'kz.aparking.MainApplication'
+    }
+}
+
+
 repositories {
     mavenCentral()
 }
