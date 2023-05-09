@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   auth-service:
-#    restart: always
+    restart: always
     image: aibaribray/joindb:latest
     ports:
       - "8080:8080"
@@ -9,9 +9,9 @@ services:
       - database
 
   database:
-    image: aibaribray/postgres:latest
+    image: postgres
     platform: linux/x86_64
-#    restart: always
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1402
