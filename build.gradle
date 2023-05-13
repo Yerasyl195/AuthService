@@ -40,7 +40,7 @@ dependencies {
 }
 
 bootBuildImage {
-    imageName = 'joindb'
+    imageName = 'production'
     pullPolicy = 'IF_NOT_PRESENT'
 }
 
