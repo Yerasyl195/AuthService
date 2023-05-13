@@ -1,11 +1,13 @@
-package kz.aparking.authservice.user;
+package kz.aparking.authservice.user.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import kz.aparking.authservice.user.models.User;
 
 import java.time.LocalDateTime;
 
-@Entity(name="user_parking_record")
+@Entity()
+@Table(name="user_parking_record")
 public class UserOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

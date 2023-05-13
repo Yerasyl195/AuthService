@@ -1,14 +1,20 @@
-package kz.aparking.authservice.user;
+package kz.aparking.authservice.user.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
+import kz.aparking.authservice.user.UserNotFoundException;
 import kz.aparking.authservice.user.jpa.UserOrderRepository;
 import kz.aparking.authservice.user.jpa.UserRepository;
+import kz.aparking.authservice.user.models.User;
+import kz.aparking.authservice.user.models.UserOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -72,6 +78,31 @@ public class UserServiceImpl implements UserService {
         return orderRepository.save(newOrder);
     }
 
+    @Override
+    public List<UserOrder> getUserHistoryForLast24Hours(Long userId) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneDayAgo = now.minusDays(1);
+        List<UserOrder> allOrders = existingUser.getParkingHistory();
+
+        return allOrders.stream()
+                .filter(order -> !order.getEndTime().isBefore(oneDayAgo))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<UserOrder> getAllUserHistoryForLast24Hours() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneDayAgo = now.minusDays(1);
+        List<UserOrder> allOrders = orderRepository.findAll();
+
+        return allOrders.stream()
+                .filter(order -> !order.getEndTime().isBefore(oneDayAgo))
+                .collect(Collectors.toList());
+    }
+
+
 //    @Override
 //    public User getUserByPhone(String phone) {
 //        Optional<User> optionalUser = userRepository.findByPhone(phone);
@@ -124,6 +155,7 @@ public class UserServiceImpl implements UserService {
         String phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);
         return findByPhone(phoneNumber);
     }
+
 }
 //        String jwtToken = request.getHeader("Authorization").substring(7);
 //        String phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);

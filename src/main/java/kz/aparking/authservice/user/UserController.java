@@ -2,6 +2,9 @@ package kz.aparking.authservice.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
+import kz.aparking.authservice.user.service.UserService;
+import kz.aparking.authservice.user.models.User;
+import kz.aparking.authservice.user.models.UserOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,7 +97,10 @@ public class UserController {
     public UserOrder addOrderToUserHistory(@PathVariable Long id, @RequestBody UserOrder newOrder) {
         return userService.addOrderToUserHistory(id, newOrder);
     }
-
+    @GetMapping("/history/all/")
+    public List<UserOrder> getAllUserHistoryForLast24Hours(){
+        return userService.getAllUserHistoryForLast24Hours();
+    }
 }
 
 

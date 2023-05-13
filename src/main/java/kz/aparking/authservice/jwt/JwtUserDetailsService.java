@@ -1,7 +1,7 @@
 package kz.aparking.authservice.jwt;
 
-import kz.aparking.authservice.user.User;
-import kz.aparking.authservice.user.UserService;
+import kz.aparking.authservice.user.models.User;
+import kz.aparking.authservice.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

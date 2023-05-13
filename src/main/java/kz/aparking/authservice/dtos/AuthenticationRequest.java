@@ -1,7 +1,5 @@
 package kz.aparking.authservice.dtos;
 
-import kz.aparking.authservice.user.User;
-
 public class AuthenticationRequest {
     private String phoneNumber;
 

@@ -1,4 +1,4 @@
-package kz.aparking.authservice.user;
+package kz.aparking.authservice.user.models;
 
 
 import jakarta.persistence.*;
