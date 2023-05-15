@@ -10,9 +10,8 @@ public class UserOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private User user;
     private String parkingSpotNumber;
     @Column(nullable = false)

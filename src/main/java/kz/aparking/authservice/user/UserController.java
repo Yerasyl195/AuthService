@@ -2,9 +2,11 @@ package kz.aparking.authservice.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
+import kz.aparking.authservice.models.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +25,6 @@ public class UserController {
         this.request = request;
     }
 
-//    @PostMapping("/addUser")
-//    public User createUser(@RequestBody User user) {
-//        return userService.createUser(user);
-//    }
-
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
@@ -42,20 +39,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    //    @GetMapping("/me")
-//    public ResponseEntity<User> getCurrentUser() {
-////        User currentUser = userService.getCurrentUser();
-////        return ResponseEntity.ok(currentUser);
-//        try {
-//            User currentUser = userService.getCurrentUser();
-//            if (currentUser == null) {
-//                throw new UserNotFoundException("User with phone not found");
-//            }
-//            return ResponseEntity.ok(currentUser);
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser() {
         try {
@@ -95,6 +78,23 @@ public class UserController {
         return userService.addOrderToUserHistory(id, newOrder);
     }
 
+    @GetMapping("/history/{id}/current")
+    public UserOrder addCurrentSession(@PathVariable Long id) {
+        return userService.getCurrentSession(id);
+    }
+
+    @GetMapping("/cars/{id}")
+    public List<Car> getUserCars(@PathVariable Long userId) {
+        return userService.getUserCars(userId);
+    }
+    @PostMapping("/cars/{id}")
+    public Car addUserCar(@PathVariable Long id, @RequestBody Car newCar) {
+        return userService.addUserCar(id, newCar);
+    }
+    @DeleteMapping("/cars/{id}")
+    public void removeUserCar(@PathVariable Long id) {
+        userService.removeUserCar(id);
+    }
 }
 
 

@@ -1,9 +1,11 @@
 package kz.aparking.authservice.user;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kz.aparking.authservice.jpa.CarRepository;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
-import kz.aparking.authservice.user.jpa.UserOrderRepository;
-import kz.aparking.authservice.user.jpa.UserRepository;
+import kz.aparking.authservice.models.Car;
+import kz.aparking.authservice.jpa.UserOrderRepository;
+import kz.aparking.authservice.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserService userService;
     private final UserRepository userRepository;
-
     @Autowired
     private UserOrderRepository orderRepository;
+    @Autowired
+    private CarRepository carRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -48,40 +51,6 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User with id " + id + " not found");
         }
     }
-
-    @Override
-    public List<UserOrder> getUserHistory(Long userId) {
-        User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-        return existingUser.getParkingHistory();
-    }
-
-    @Override
-    public UserOrder getLastOrderForUser(Long userId) {
-        User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-        return orderRepository.findTopByUserOrderByStartTimeDesc(existingUser);
-    }
-
-    @Override
-    public UserOrder addOrderToUserHistory(Long userId, UserOrder newOrder) {
-        User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-
-        newOrder.setUser(existingUser);
-        return orderRepository.save(newOrder);
-    }
-
-//    @Override
-//    public User getUserByPhone(String phone) {
-//        Optional<User> optionalUser = userRepository.findByPhone(phone);
-//        if (optionalUser.isPresent()) {
-//            return optionalUser.get();
-//        } else {
-//            throw new UserNotFoundException("User with phone " + phone + " not found");
-//        }
-//    }
-
     @Override
     public void saveUser(User user) {
         userRepository.save(user);
@@ -93,7 +62,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + user.getId()));
         existingUser.setPhone(user.getPhone());
         existingUser.setFullName(user.getFullName());
-        existingUser.setCarNumbers(user.getCars());
         userRepository.save(existingUser);
     }
 
@@ -124,16 +92,72 @@ public class UserServiceImpl implements UserService {
         String phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);
         return findByPhone(phoneNumber);
     }
+
+
+    @Override
+    public List<UserOrder> getUserHistory(Long userId) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+        return existingUser.getParkingHistory();
+    }
+
+    @Override
+    public UserOrder getLastOrderForUser(Long userId) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+        return orderRepository.findTopByUserOrderByStartTimeDesc(existingUser);
+    }
+
+    @Override
+    public UserOrder addOrderToUserHistory(Long userId, UserOrder newOrder) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        newOrder.setUser(existingUser);
+        return orderRepository.save(newOrder);
+    }
+
+    @Override
+    public UserOrder getCurrentSession(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        List<UserOrder> history = user.getParkingHistory();
+
+        if (history.isEmpty())
+            throw new RuntimeException("parking history is empty for User with ID: " + userId.toString());
+
+        UserOrder lastSession = history.get(history.size() - 1);
+        if (lastSession.getEndTime() != null)
+            throw new RuntimeException("no active session for User with ID: " + userId.toString());
+
+        return lastSession;
+    }
+
+    @Override
+    public Car addUserCar(Long userId, Car newCar) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        newCar.setUser(user);
+        return carRepository.save(newCar);
+    }
+
+    @Override
+    public List<Car> getUserCars(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+        return user.getCars();
+    }
+
+    @Override
+    public void removeUserCar(Long carId) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + carId));
+        carRepository.delete(car);
+    }
+
+
 }
-//        String jwtToken = request.getHeader("Authorization").substring(7);
-//        String phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);
-//        return findByPhone(phoneNumber);
-//        String jwtToken = request.getHeader("Authorization");
-//        if (jwtToken == null || jwtToken.isEmpty()) {
-//            throw new RuntimeException("Authorization header is missing");
-//        }
-//        String phoneNumber = jwtToken.substring(7);
-//        System.out.printf(phoneNumber);
-//        return findByPhone(phoneNumber);
 
 

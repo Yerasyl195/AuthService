@@ -1,4 +1,4 @@
-package kz.aparking.authservice.user.jpa;
+package kz.aparking.authservice.jpa;
 import kz.aparking.authservice.user.User;
 import kz.aparking.authservice.user.UserOrder;
 import org.springframework.data.jpa.repository.JpaRepository;

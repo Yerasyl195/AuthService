@@ -1,5 +1,6 @@
 package kz.aparking.authservice.user;
 
+import kz.aparking.authservice.models.Car;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,11 +9,6 @@ import java.util.List;
 public interface UserService {
     User createUser(User user);
     User getUserById(Long id);
-    //User getUserByPhone(String phone);
-
-    List<UserOrder> getUserHistory(Long userId);
-    UserOrder getLastOrderForUser(Long userId);
-    UserOrder addOrderToUserHistory(Long userId, UserOrder userOrder);
 
     void saveUser(User user);
 
@@ -23,4 +19,12 @@ public interface UserService {
     boolean existsByPhone(String phone);
     User findByPhone(String phone);
     User getCurrentUser();
+
+    List<UserOrder> getUserHistory(Long userId);
+    UserOrder getLastOrderForUser(Long userId);
+    UserOrder addOrderToUserHistory(Long userId, UserOrder userOrder);
+    UserOrder getCurrentSession(Long userId);
+    Car addUserCar(Long UserId, Car car);
+    List<Car> getUserCars(Long UserId);
+    void removeUserCar(Long CarId);
 }

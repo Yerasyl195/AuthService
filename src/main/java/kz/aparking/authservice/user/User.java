@@ -2,6 +2,7 @@ package kz.aparking.authservice.user;
 
 
 import jakarta.persistence.*;
+import kz.aparking.authservice.models.Car;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,13 +25,21 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
-    @ElementCollection
-    @CollectionTable(name = "cars", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "car")
-    private List<String> cars;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Car> cars;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("startTime DESC")
     private List<UserOrder> parkingHistory;
+
+    public User(Long id, String phone, String fullName) {
+        this.id = id;
+        this.phone = phone;
+        this.fullName = fullName;
+    }
+
+    public User() {
+    }
 
     public Long getId() {
         return id;
@@ -40,34 +49,10 @@ public class User implements UserDetails {
         return phone;
     }
 
-    public List<String> getCars() {
-        return cars;
-    }
-
     public String getFullName() {
         return fullName;
     }
 
-
-    public List<UserOrder> getParkingHistory() {
-        return parkingHistory;
-    }
-
-    public void setParkingHistory(List<UserOrder> parkingHistory) {
-        this.parkingHistory = parkingHistory;
-    }
-
-
-    public User(Long id, String phone, String fullName, List<String> cars) {//, List<ParkingHistory> parkingHistory) {
-        this.id = id;
-        this.phone = phone;
-        this.fullName = fullName;
-        this.cars = cars;
-        //this.parkingHistory = parkingHistory;
-    }
-
-    public User() {
-    }
 
     public void setPhone(String phone) {
         this.phone = phone;
@@ -75,15 +60,6 @@ public class User implements UserDetails {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public void setCarNumbers(List<String> cars) {
-        this.cars = cars;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -115,6 +91,30 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public List<UserOrder> getParkingHistory() {
+        return parkingHistory;
+    }
+    public void setParkingHistory(List<UserOrder> parkingHistory) {
+        this.parkingHistory = parkingHistory;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+
+
+
 }
 
 
