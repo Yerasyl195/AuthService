@@ -12,15 +12,20 @@ public class ParkingSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JoinColumn(name = "user_id", nullable=false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private User user;
+    @Column(name = "parkspot_number")
     private String parkingSpotNumber;
-    @Column(nullable = false)
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
+    @Column(name = "end_time")
     private LocalDateTime endTime;
+    @Column(name = "price")
     private String price;
+    @Column(name = "ispaid")
     private boolean isPaid;
+    @Column(name = "car_number")
     private String carNumber;
 
     public ParkingSession(String parkingSpotNumber, LocalDateTime startTime, LocalDateTime endTime, String price, boolean isPaid, String carNumber) {

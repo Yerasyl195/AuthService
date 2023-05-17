@@ -77,10 +77,10 @@ public class UserController {
         return userService.getUserHistory(id);
     }
 
-    @GetMapping("/history/{id}/last")
-    public ParkingSession getCurrentSessionForUser(@PathVariable Long id) {
-        return userService.getCurrentSessionForUser(id);
-    }
+//    @GetMapping("/history/{id}/last")
+//    public ParkingSession getCurrentSessionForUser(@PathVariable Long id) {
+//        return userService.getCurrentSessionForUser(id);
+//    }
 
 }
 

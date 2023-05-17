@@ -13,7 +13,7 @@ public interface UserService {
     //User getUserByPhone(String phone);
 
     List<ParkingSession> getUserHistory(Long userId);
-    ParkingSession getCurrentSessionForUser(Long userId);
+
     ParkingSession createSessionForUser(Long userId, ParkingSession parkingSession);
 
     void deleteUser(Long userId);

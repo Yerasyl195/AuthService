@@ -24,13 +24,20 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
-    @ElementCollection
-    @CollectionTable(name = "cars", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "car")
-    private List<String> cars;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ParkingSession> parkingHistory;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Car> cars;
+
+    public User(Long id, String phone, String fullName, List<String> cars) {//, List<ParkingHistory> parkingHistory) {
+        this.id = id;
+        this.phone = phone;
+        this.fullName = fullName;
+    }
+
+    public User() {
+    }
 
     public Long getId() {
         return id;
@@ -40,7 +47,7 @@ public class User implements UserDetails {
         return phone;
     }
 
-    public List<String> getCars() {
+    public List<Car> getCars() {
         return cars;
     }
 
@@ -57,18 +64,6 @@ public class User implements UserDetails {
         this.parkingHistory = parkingHistory;
     }
 
-
-    public User(Long id, String phone, String fullName, List<String> cars) {//, List<ParkingHistory> parkingHistory) {
-        this.id = id;
-        this.phone = phone;
-        this.fullName = fullName;
-        this.cars = cars;
-        //this.parkingHistory = parkingHistory;
-    }
-
-    public User() {
-    }
-
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -77,13 +72,8 @@ public class User implements UserDetails {
         this.fullName = fullName;
     }
 
-    public void setCarNumbers(List<String> cars) {
+    public void setCars(List<Car> cars) {
         this.cars = cars;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -114,6 +104,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 }
 

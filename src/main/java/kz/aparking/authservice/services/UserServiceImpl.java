@@ -3,11 +3,10 @@ package kz.aparking.authservice.services;
 import kz.aparking.authservice.errors.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
-import kz.aparking.authservice.jpa.UserOrderRepository;
+import kz.aparking.authservice.jpa.ParkingSessionRepository;
 import kz.aparking.authservice.jpa.UserRepository;
 import kz.aparking.authservice.models.ParkingSession;
 import kz.aparking.authservice.models.User;
-import kz.aparking.authservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    private UserOrderRepository orderRepository;
+    private ParkingSessionRepository orderRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -92,17 +91,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ParkingSession getCurrentSessionForUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-        ParkingSession lastSession = orderRepository.findTopByUserOrderByStartTimeDesc(user);
-        if (lastSession.getEndTime() != null) {
-            throw new RuntimeException("There is no active session for user with id: " + userId);
-        }
-        return lastSession;
-    }
-
-    @Override
     public ParkingSession createSessionForUser(Long userId, ParkingSession newOrder) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
@@ -110,6 +98,17 @@ public class UserServiceImpl implements UserService {
         newOrder.setUser(existingUser);
         return orderRepository.save(newOrder);
     }
+
+//    @Override
+//    public ParkingSession getCurrentSessionForUser(Long userId) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+//        ParkingSession lastSession = orderRepository.findTopByUserOrderByStartTimeDesc(user);
+//        if (lastSession.getEndTime() != null) {
+//            throw new RuntimeException("There is no active session for user with id: " + userId);
+//        }
+//        return lastSession;
+//    }
 }
 
 
