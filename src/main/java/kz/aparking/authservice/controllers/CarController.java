@@ -39,9 +39,9 @@ public class CarController {
         return entityModel;
     }
 
-    @PostMapping("user/id")
-    public ResponseEntity<Car> addCarForUser(@PathVariable Long userId, @RequestBody Car car) {
-        Car savedCar = carService.addCarForUser(userId, car);
+    @PostMapping("user/{id}")
+    public ResponseEntity<Car> addCarForUser(@PathVariable Long id, @RequestBody Car car) {
+        Car savedCar = carService.addCarForUser(id, car);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedCar.getId())

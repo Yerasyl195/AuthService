@@ -16,6 +16,7 @@ public class Car {
     @Column(name = "regist_number")
     private String registNumber;
 
+    @JsonIgnore
     @JoinColumn(name = "user_id", nullable=false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -25,6 +26,10 @@ public class Car {
         this.mark = mark;
         this.registNumber = registNumber;
         this.user = user;
+    }
+
+    public Car() {
+
     }
 
     public Long getId() {

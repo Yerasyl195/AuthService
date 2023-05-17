@@ -2,9 +2,11 @@ package kz.aparking.authservice.services;
 
 import kz.aparking.authservice.errors.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import kz.aparking.authservice.jpa.CarRepository;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
 import kz.aparking.authservice.jpa.ParkingSessionRepository;
 import kz.aparking.authservice.jpa.UserRepository;
+import kz.aparking.authservice.models.Car;
 import kz.aparking.authservice.models.ParkingSession;
 import kz.aparking.authservice.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +28,15 @@ public class UserServiceImpl implements UserService {
     private UserService userService;
     private final UserRepository userRepository;
 
-    @Autowired
-    private ParkingSessionRepository orderRepository;
+    private final ParkingSessionRepository orderRepository;
+
+    private final CarRepository carRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, ParkingSessionRepository orderRepository, CarRepository carRepository) {
         this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+        this.carRepository = carRepository;
     }
 
     @Override
@@ -81,7 +86,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     //history
     @Override
     public List<ParkingSession> getUserHistory(Long userId) {
@@ -98,6 +102,15 @@ public class UserServiceImpl implements UserService {
         newOrder.setUser(existingUser);
         return orderRepository.save(newOrder);
     }
+
+    //car
+    @Override
+    public List<Car> getUserCars(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+        return user.getCars();
+    }
+
 
 //    @Override
 //    public ParkingSession getCurrentSessionForUser(Long userId) {

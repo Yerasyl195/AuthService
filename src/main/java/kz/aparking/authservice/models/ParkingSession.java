@@ -12,6 +12,7 @@ public class ParkingSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @JoinColumn(name = "user_id", nullable=false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -37,6 +38,8 @@ public class ParkingSession {
         this.carNumber = carNumber;
     }
 
+    protected ParkingSession() {
+    }
     public String getCarNumber() {
         return carNumber;
     }
@@ -68,9 +71,6 @@ public class ParkingSession {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
-    }
-
-    protected ParkingSession() {
     }
 
     public Long getId() {

@@ -3,6 +3,7 @@ package kz.aparking.authservice.controllers;
 import kz.aparking.authservice.errors.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
+import kz.aparking.authservice.models.Car;
 import kz.aparking.authservice.models.ParkingSession;
 import kz.aparking.authservice.models.User;
 import kz.aparking.authservice.services.UserService;
@@ -73,8 +74,13 @@ public class UserController {
     }
 
     @GetMapping("/history/{id}")
-    public List<ParkingSession> GetParkingHistoryForUser(@PathVariable Long id) {
+    public List<ParkingSession> getParkingHistoryForUser(@PathVariable Long id) {
         return userService.getUserHistory(id);
+    }
+
+    @GetMapping("/cars/{id}")
+    public List<Car> getUserCars(@PathVariable Long id) {
+        return userService.getUserCars(id);
     }
 
 //    @GetMapping("/history/{id}/last")
