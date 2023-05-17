@@ -1,5 +1,7 @@
-package kz.aparking.authservice.user;
+package kz.aparking.authservice.services;
 
+import kz.aparking.authservice.models.ParkingSession;
+import kz.aparking.authservice.models.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +12,9 @@ public interface UserService {
     User getUserById(Long id);
     //User getUserByPhone(String phone);
 
-    List<UserOrder> getUserHistory(Long userId);
-    UserOrder getLastOrderForUser(Long userId);
-    UserOrder addOrderToUserHistory(Long userId, UserOrder userOrder);
-
-    void saveUser(User user);
-
-    void updateUser(User user);
+    List<ParkingSession> getUserHistory(Long userId);
+    ParkingSession getCurrentSessionForUser(Long userId);
+    ParkingSession createSessionForUser(Long userId, ParkingSession parkingSession);
 
     void deleteUser(Long userId);
 

@@ -1,4 +1,4 @@
-package kz.aparking.authservice;
+package kz.aparking.authservice.config;
 
 import com.nexmo.client.NexmoClient;
 import org.springframework.beans.factory.annotation.Value;

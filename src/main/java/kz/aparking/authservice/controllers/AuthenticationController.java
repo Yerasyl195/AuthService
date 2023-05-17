@@ -1,11 +1,11 @@
-package kz.aparking.authservice;
+package kz.aparking.authservice.controllers;
 
 import com.nexmo.client.NexmoClientException;
 import kz.aparking.authservice.dtos.AuthenticationRequest;
 import kz.aparking.authservice.dtos.VerificationRequest;
 import kz.aparking.authservice.services.AuthenticationService;
-import kz.aparking.authservice.user.User;
-import kz.aparking.authservice.user.UserService;
+import kz.aparking.authservice.models.User;
+import kz.aparking.authservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

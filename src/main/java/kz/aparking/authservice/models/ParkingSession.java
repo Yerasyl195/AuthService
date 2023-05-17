@@ -1,12 +1,13 @@
-package kz.aparking.authservice.user;
+package kz.aparking.authservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import kz.aparking.authservice.models.User;
 
 import java.time.LocalDateTime;
 
 @Entity(name="user_parking_record")
-public class UserOrder {
+public class ParkingSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +23,7 @@ public class UserOrder {
     private boolean isPaid;
     private String carNumber;
 
-    public UserOrder(String parkingSpotNumber, LocalDateTime startTime, LocalDateTime endTime, String price, boolean isPaid, String carNumber) {
+    public ParkingSession(String parkingSpotNumber, LocalDateTime startTime, LocalDateTime endTime, String price, boolean isPaid, String carNumber) {
         this.parkingSpotNumber = parkingSpotNumber;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -64,7 +65,7 @@ public class UserOrder {
         this.endTime = endTime;
     }
 
-    protected UserOrder() {
+    protected ParkingSession() {
     }
 
     public Long getId() {

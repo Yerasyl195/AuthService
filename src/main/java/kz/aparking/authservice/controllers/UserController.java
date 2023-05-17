@@ -1,7 +1,11 @@
-package kz.aparking.authservice.user;
+package kz.aparking.authservice.controllers;
 
+import kz.aparking.authservice.errors.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
+import kz.aparking.authservice.models.ParkingSession;
+import kz.aparking.authservice.models.User;
+import kz.aparking.authservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +27,6 @@ public class UserController {
         this.request = request;
     }
 
-//    @PostMapping("/addUser")
-//    public User createUser(@RequestBody User user) {
-//        return userService.createUser(user);
-//    }
-
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
@@ -42,20 +41,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    //    @GetMapping("/me")
-//    public ResponseEntity<User> getCurrentUser() {
-////        User currentUser = userService.getCurrentUser();
-////        return ResponseEntity.ok(currentUser);
-//        try {
-//            User currentUser = userService.getCurrentUser();
-//            if (currentUser == null) {
-//                throw new UserNotFoundException("User with phone not found");
-//            }
-//            return ResponseEntity.ok(currentUser);
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser() {
         try {
@@ -80,19 +65,21 @@ public class UserController {
         userService.deleteUser(id);
     }
 
+
+    //history
+    @PostMapping("/history/{id}")
+    public ParkingSession createSessionForUser(@PathVariable Long id, @RequestBody ParkingSession newOrder) {
+        return userService.createSessionForUser(id, newOrder);
+    }
+
     @GetMapping("/history/{id}")
-    public List<UserOrder> GetParkingHistoryForUser(@PathVariable Long id) {
+    public List<ParkingSession> GetParkingHistoryForUser(@PathVariable Long id) {
         return userService.getUserHistory(id);
     }
 
     @GetMapping("/history/{id}/last")
-    public UserOrder getLastOrderForUser(@PathVariable Long id) {
-        return userService.getLastOrderForUser(id);
-    }
-
-    @PostMapping("/history/{id}")
-    public UserOrder addOrderToUserHistory(@PathVariable Long id, @RequestBody UserOrder newOrder) {
-        return userService.addOrderToUserHistory(id, newOrder);
+    public ParkingSession getCurrentSessionForUser(@PathVariable Long id) {
+        return userService.getCurrentSessionForUser(id);
     }
 
 }

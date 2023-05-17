@@ -4,8 +4,7 @@ import com.nexmo.client.NexmoClient;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.verify.*;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
-import kz.aparking.authservice.user.User;
-import kz.aparking.authservice.user.UserService;
+import kz.aparking.authservice.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

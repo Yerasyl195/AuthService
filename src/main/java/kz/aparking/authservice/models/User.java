@@ -1,4 +1,4 @@
-package kz.aparking.authservice.user;
+package kz.aparking.authservice.models;
 
 
 import jakarta.persistence.*;
@@ -30,7 +30,7 @@ public class User implements UserDetails {
     private List<String> cars;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserOrder> parkingHistory;
+    private List<ParkingSession> parkingHistory;
 
     public Long getId() {
         return id;
@@ -49,11 +49,11 @@ public class User implements UserDetails {
     }
 
 
-    public List<UserOrder> getParkingHistory() {
+    public List<ParkingSession> getParkingHistory() {
         return parkingHistory;
     }
 
-    public void setParkingHistory(List<UserOrder> parkingHistory) {
+    public void setParkingHistory(List<ParkingSession> parkingHistory) {
         this.parkingHistory = parkingHistory;
     }
 

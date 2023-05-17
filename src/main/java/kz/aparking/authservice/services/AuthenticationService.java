@@ -1,7 +1,7 @@
 package kz.aparking.authservice.services;
 
 import com.nexmo.client.NexmoClientException;
-import kz.aparking.authservice.user.User;
+import kz.aparking.authservice.models.User;
 
 import java.io.IOException;
 

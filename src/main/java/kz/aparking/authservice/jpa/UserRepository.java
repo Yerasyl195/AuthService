@@ -1,10 +1,8 @@
-package kz.aparking.authservice.user.jpa;
+package kz.aparking.authservice.jpa;
 
-import kz.aparking.authservice.user.User;
+import kz.aparking.authservice.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
