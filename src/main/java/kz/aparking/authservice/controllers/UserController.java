@@ -82,12 +82,6 @@ public class UserController {
     public List<Car> getUserCars(@PathVariable Long id) {
         return userService.getUserCars(id);
     }
-
-//    @GetMapping("/history/{id}/last")
-//    public ParkingSession getCurrentSessionForUser(@PathVariable Long id) {
-//        return userService.getCurrentSessionForUser(id);
-//    }
-
 }
 
 
