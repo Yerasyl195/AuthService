@@ -1,7 +1,8 @@
-package kz.aparking.authservice.logout;
+package kz.aparking.authservice.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
+import kz.aparking.authservice.services.TokenBlacklistService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,15 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class LogoutController {
-
-//    @Autowired
-//    private JwtTokenUtil jwtTokenUtil;
-//
-//    @Autowired
-//    private TokenBlacklistService tokenBlacklistService;
-//
-//    @Autowired
-//    private HttpServletRequest request;
     private final JwtTokenUtil jwtTokenUtil;
     private final TokenBlacklistService tokenBlacklistService;
     private final HttpServletRequest request;

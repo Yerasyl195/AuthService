@@ -1,5 +1,6 @@
-package kz.aparking.authservice.logout;
+package kz.aparking.authservice.services;
 
+import kz.aparking.authservice.services.TokenBlacklistService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -11,10 +12,6 @@ public class TokenBlacklistServiceImpl implements TokenBlacklistService {
 
     private final Set<String> blacklistedTokens = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-//    @Override
-//    public void addToBlacklist(String token) {
-//        blacklistedTokens.add(token);
-//    }
     @Override
     public void addToBlacklist(String token) {
         if (token != null) {
@@ -23,10 +20,6 @@ public class TokenBlacklistServiceImpl implements TokenBlacklistService {
     }
 
 
-//    @Override
-//    public boolean isBlacklisted(String token) {
-//        return blacklistedTokens.contains(token);
-//    }
     @Override
     public boolean isBlacklisted(String token) {
         if (token == null) {

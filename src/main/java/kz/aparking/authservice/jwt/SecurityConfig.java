@@ -1,6 +1,6 @@
 package kz.aparking.authservice.jwt;
 
-import kz.aparking.authservice.logout.TokenBlacklistService;
+import kz.aparking.authservice.services.TokenBlacklistService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.SecurityConfigurer;

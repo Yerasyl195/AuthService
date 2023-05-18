@@ -6,6 +6,7 @@ import kz.aparking.authservice.jwt.JwtTokenUtil;
 import kz.aparking.authservice.models.Car;
 import kz.aparking.authservice.models.ParkingSession;
 import kz.aparking.authservice.models.User;
+import kz.aparking.authservice.services.TokenBlacklistServiceImpl;
 import kz.aparking.authservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,14 @@ public class UserController {
     private final JwtTokenUtil jwtTokenUtil;
     private final HttpServletRequest request;
 
+    private final TokenBlacklistServiceImpl tokenBlacklistService;
+
     @Autowired
-    public UserController(UserService userService, JwtTokenUtil jwtTokenUtil, HttpServletRequest request) {
+    public UserController(UserService userService, JwtTokenUtil jwtTokenUtil, HttpServletRequest request, TokenBlacklistServiceImpl tokenBlacklistService) {
         this.userService = userService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.request = request;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @GetMapping("/{id}")
@@ -60,12 +64,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
     @PostMapping("/delete/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id, HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        tokenBlacklistService.addToBlacklist(jwtToken);
         userService.deleteUser(id);
     }
-
 
     //history
     @PostMapping("/history/{id}")

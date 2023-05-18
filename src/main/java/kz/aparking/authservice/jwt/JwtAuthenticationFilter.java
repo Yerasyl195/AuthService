@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kz.aparking.authservice.logout.TokenBlacklistService;
+import kz.aparking.authservice.services.TokenBlacklistService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +39,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 } catch (Exception e) {
                     logger.error("Unable to get JWT Token");
                 }
+            } else {
+                // Token is blacklisted, reject the request
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         }
 
