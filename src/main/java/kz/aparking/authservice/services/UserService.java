@@ -11,15 +11,17 @@ import java.util.List;
 public interface UserService {
     User createUser(User user);
     User getUserById(Long id);
-
     void deleteUser(Long userId);
-
     boolean existsByPhone(String phone);
     User findByPhone(String phone);
     User getCurrentUser();
     List<ParkingSession> getUserHistory(Long userId);
 
     ParkingSession createSessionForUser(Long userId, ParkingSession parkingSession);
+
+    ParkingSession getLastSessionForUser(Long UserId);
     List<Car> getUserCars(Long userId);
+
+
 
 }

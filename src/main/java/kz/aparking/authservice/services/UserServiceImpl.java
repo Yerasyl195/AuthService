@@ -28,14 +28,14 @@ public class UserServiceImpl implements UserService {
     private UserService userService;
     private final UserRepository userRepository;
 
-    private final ParkingSessionRepository orderRepository;
+    private final ParkingSessionRepository parkingSessionRepository;
 
     private final CarRepository carRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ParkingSessionRepository orderRepository, CarRepository carRepository) {
+    public UserServiceImpl(UserRepository userRepository, ParkingSessionRepository parkingSessionRepository, CarRepository carRepository) {
         this.userRepository = userRepository;
-        this.orderRepository = orderRepository;
+        this.parkingSessionRepository = parkingSessionRepository;
         this.carRepository = carRepository;
     }
 
@@ -99,8 +99,28 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 
+        boolean hasMatchingCar = existingUser.getCars().stream()
+                .map(Car::getRegistNumber)
+                .anyMatch(carNumber -> carNumber.equals(newOrder.getCarNumber()));
+
+        if (!hasMatchingCar) {
+            throw new RuntimeException("User does not have a car with number: " + newOrder.getCarNumber());
+        }
+
         newOrder.setUser(existingUser);
-        return orderRepository.save(newOrder);
+        return parkingSessionRepository.save(newOrder);
+    }
+
+    @Override
+    public ParkingSession getLastSessionForUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+        ParkingSession lastSession = parkingSessionRepository.findTopByUserOrderByStartTimeDesc(user);
+
+        if (lastSession == null) {
+            throw new RuntimeException("There are no parking sessions for user with id: " + userId);
+        }
+        return lastSession;
     }
 
     //car
@@ -110,18 +130,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
         return user.getCars();
     }
-
-
-//    @Override
-//    public ParkingSession getCurrentSessionForUser(Long userId) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-//        ParkingSession lastSession = orderRepository.findTopByUserOrderByStartTimeDesc(user);
-//        if (lastSession.getEndTime() != null) {
-//            throw new RuntimeException("There is no active session for user with id: " + userId);
-//        }
-//        return lastSession;
-//    }
 }
 
 

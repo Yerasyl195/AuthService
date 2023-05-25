@@ -6,7 +6,6 @@ services:
       - "8080:8080"
     depends_on:
       - database
-
   database:
     image: postgres:latest
     platform: linux/x86_64
