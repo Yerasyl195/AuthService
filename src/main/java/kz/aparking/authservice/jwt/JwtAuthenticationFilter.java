@@ -1,5 +1,6 @@
 package kz.aparking.authservice.jwt;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +26,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.tokenBlacklistService = tokenBlacklistService;
     }
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            @Nonnull HttpServletRequest request,
+            @Nonnull HttpServletResponse response,
+            @Nonnull FilterChain filterChain) throws ServletException, IOException {
+
         final String requestTokenHeader = request.getHeader("Authorization");
 
         String phoneNumber = null;
@@ -36,22 +41,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtToken != null && !tokenBlacklistService.isBlacklisted(jwtToken)) {
                 try {
                     phoneNumber = jwtTokenUtil.getPhoneNumberFromToken(jwtToken);
+                    if (phoneNumber != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(phoneNumber);
+                        if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+                            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                        }
+                    }
                 } catch (Exception e) {
-                    logger.error("Unable to get JWT Token");
+                    logger.error("Unable to get JWT Token or validate it");
                 }
             } else {
                 // Token is blacklisted, reject the request
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
-            }
-        }
-
-        if (phoneNumber != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(phoneNumber);
-
-            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
 
