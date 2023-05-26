@@ -11,14 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class LogoutController {
 
-//    @Autowired
-//    private JwtTokenUtil jwtTokenUtil;
-//
-//    @Autowired
-//    private TokenBlacklistService tokenBlacklistService;
-//
-//    @Autowired
-//    private HttpServletRequest request;
     private final JwtTokenUtil jwtTokenUtil;
     private final TokenBlacklistService tokenBlacklistService;
     private final HttpServletRequest request;

@@ -23,11 +23,6 @@ public class UserController {
         this.request = request;
     }
 
-//    @PostMapping("/addUser")
-//    public User createUser(@RequestBody User user) {
-//        return userService.createUser(user);
-//    }
-
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
@@ -42,20 +37,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    //    @GetMapping("/me")
-//    public ResponseEntity<User> getCurrentUser() {
-////        User currentUser = userService.getCurrentUser();
-////        return ResponseEntity.ok(currentUser);
-//        try {
-//            User currentUser = userService.getCurrentUser();
-//            if (currentUser == null) {
-//                throw new UserNotFoundException("User with phone not found");
-//            }
-//            return ResponseEntity.ok(currentUser);
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser() {
         try {
@@ -96,5 +77,24 @@ public class UserController {
     }
 
 }
+//    @GetMapping("/me")
+//    public ResponseEntity<User> getCurrentUser() {
+////        User currentUser = userService.getCurrentUser();
+////        return ResponseEntity.ok(currentUser);
+//        try {
+//            User currentUser = userService.getCurrentUser();
+//            if (currentUser == null) {
+//                throw new UserNotFoundException("User with phone not found");
+//            }
+//            return ResponseEntity.ok(currentUser);
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+
+//    @PostMapping("/addUser")
+//    public User createUser(@RequestBody User user) {
+//        return userService.createUser(user);
+//    }
 
 

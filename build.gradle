@@ -26,10 +26,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'com.twilio.sdk:twilio:9.0.0'
-    implementation 'com.nexmo:client'
+    implementation 'com.twilio.sdk:twilio:9.5.0'
+    //implementation 'com.nexmo:client'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'com.nexmo:nexmo-spring-boot-starter:1.1.0'
+    //implementation 'com.nexmo:nexmo-spring-boot-starter:1.1.0'
     implementation 'com.vonage:client:7.3.0'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -39,10 +39,10 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 }
 
-bootBuildImage {
-    imageName = 'production'
-    pullPolicy = 'IF_NOT_PRESENT'
-}
+//bootBuildImage {
+//    imageName = 'production'
+//    pullPolicy = 'IF_NOT_PRESENT'
+//}
 
 
 tasks.named('test') {
