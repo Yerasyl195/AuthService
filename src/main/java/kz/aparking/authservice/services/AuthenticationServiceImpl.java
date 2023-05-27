@@ -3,6 +3,7 @@ package kz.aparking.authservice.services;
 import com.nexmo.client.NexmoClient;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.verify.*;
+import kz.aparking.authservice.dtos.RegistrationRequest;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
 import kz.aparking.authservice.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +47,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
     @Override
-    public String register(User user) {
-        if (userService.existsByPhone(user.getPhone())) {
+    public String register(RegistrationRequest userDto) {
+        if (userService.existsByPhone(userDto.getPhone())) {
             throw new RuntimeException("User with this phone number already exists");
         }
-        User newUser = userService.createUser(user);
+        User newUser = userService.createUser(userDto);
         return jwtTokenUtil.generateToken(newUser.getPhone());
     }
 

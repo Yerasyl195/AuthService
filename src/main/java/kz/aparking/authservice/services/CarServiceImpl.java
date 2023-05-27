@@ -39,7 +39,7 @@ public class CarServiceImpl implements CarService{
     public Car addCarForUser(Long userId, Car car) {
         Optional<User> user = userRepository.findById(userId);
         if(user.isEmpty())
-            throw new UserNotFoundException("can't find car with id:"+userId);
+            throw new UserNotFoundException("can't find user with id:"+userId);
 
         car.setUser(user.get());
         return carRepository.save(car);

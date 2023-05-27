@@ -2,6 +2,7 @@ package kz.aparking.authservice.controllers;
 
 import com.nexmo.client.NexmoClientException;
 import kz.aparking.authservice.dtos.AuthenticationRequest;
+import kz.aparking.authservice.dtos.RegistrationRequest;
 import kz.aparking.authservice.dtos.VerificationRequest;
 import kz.aparking.authservice.services.AuthenticationService;
 import kz.aparking.authservice.models.User;
@@ -54,9 +55,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
+    public ResponseEntity<String> register(@RequestBody RegistrationRequest userDto) {
         try {
-            String jwtToken = authenticationService.register(user);
+            String jwtToken = authenticationService.register(userDto);
             return ResponseEntity.ok(jwtToken);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

@@ -1,5 +1,6 @@
 package kz.aparking.authservice.services;
 
+import kz.aparking.authservice.dtos.RegistrationRequest;
 import kz.aparking.authservice.errors.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aparking.authservice.jpa.CarRepository;
@@ -30,21 +31,32 @@ public class UserServiceImpl implements UserService {
 
     private final ParkingSessionRepository parkingSessionRepository;
 
-    private final CarRepository carRepository;
+    private final CarService carService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ParkingSessionRepository parkingSessionRepository, CarRepository carRepository) {
+    public UserServiceImpl(UserRepository userRepository, ParkingSessionRepository parkingSessionRepository, CarService carService) {
         this.userRepository = userRepository;
         this.parkingSessionRepository = parkingSessionRepository;
-        this.carRepository = carRepository;
+        this.carService = carService;
     }
 
     @Override
-    public User createUser(User user) {
-        if (userService.existsByPhone(user.getPhone())) {
+    public User createUser(RegistrationRequest userDto) {
+        if (userService.existsByPhone(userDto.getPhone())) {
             throw new RuntimeException("User with this phone number already exists");
         }
-        return userRepository.save(user);
+        User newUser = new User();
+
+        newUser.setFullName(userDto.getFullName());
+        newUser.setPhone(userDto.getPhone());
+
+        User savedUser = userRepository.save(newUser);
+
+        for(Car car : userDto.getCars()) {
+            carService.addCarForUser(savedUser.getId(), car);
+        }
+
+        return savedUser;
     }
 
     @Override
@@ -55,6 +67,24 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UserNotFoundException("User with id " + id + " not found");
         }
+    }
+
+    @Override
+    public User updateUser(User updatedUser, Long id) {
+        Optional<User> optionalUser =  userRepository.findById(id);
+
+        if(optionalUser.isEmpty())
+            throw new UserNotFoundException("can't find user with id:"+id);
+
+        if (userService.existsByPhone(updatedUser.getPhone())) {
+            throw new RuntimeException("User with this phone number already exists");
+        }
+
+        User newUser = optionalUser.get();
+        newUser.setPhone(updatedUser.getPhone());
+        newUser.setFullName(updatedUser.getFullName());
+
+        return userRepository.save(newUser);
     }
 
     @Override

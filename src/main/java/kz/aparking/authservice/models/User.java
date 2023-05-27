@@ -33,10 +33,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Car> cars;
 
-    public User(Long id, String phone, String fullName, List<String> cars) {//, List<ParkingHistory> parkingHistory) {
+    public User(Long id, String phone, String fullName, List<Car> cars) {//, List<ParkingHistory> parkingHistory) {
         this.id = id;
         this.phone = phone;
         this.fullName = fullName;
+        this.cars = cars;
     }
 
     public User() {

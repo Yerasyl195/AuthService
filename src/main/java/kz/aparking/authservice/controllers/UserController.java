@@ -64,7 +64,13 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @PostMapping("/delete/{id}")
+
+    @PutMapping("/update/{id}")
+    public User updateUserById(@PathVariable Long id, @RequestBody User updatedUser) {
+        return userService.updateUser(updatedUser, id);
+    }
+
+    @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long id, HttpServletRequest request) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         tokenBlacklistService.addToBlacklist(jwtToken);
