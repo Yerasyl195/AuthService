@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     private final String TWILIO_ACCOUNT_SID = "AC9203b7c1e4cd2817039de0e65f40b10d";
-    private final String TWILIO_AUTH_TOKEN = "819a06867986ba75a87ea50459dc4de8";
+    private final String TWILIO_AUTH_TOKEN = "f6cf6652bd3e2e6a2e297793b95cd783";
     private final String SERVICE_ID = "VA91e3cf08dfb9ed7d80c8ade6cad6ad66";
 //    @Autowired
 //    public AuthenticationServiceImpl(NexmoClient nexmoClient) {
