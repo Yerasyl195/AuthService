@@ -10,8 +10,6 @@ import kz.aparking.authservice.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
@@ -24,34 +22,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final String TWILIO_ACCOUNT_SID = "AC9203b7c1e4cd2817039de0e65f40b10d";
     private final String TWILIO_AUTH_TOKEN = "f6cf6652bd3e2e6a2e297793b95cd783";
     private final String SERVICE_ID = "VA91e3cf08dfb9ed7d80c8ade6cad6ad66";
-//    @Autowired
-//    public AuthenticationServiceImpl(NexmoClient nexmoClient) {
-//        this.nexmoClient = nexmoClient;
-//    }
+
     public AuthenticationServiceImpl() {
         Twilio.init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
     }
 
-//    @Override
-//    public String requestVerificationCode(String phoneNumber) throws IOException, NexmoClientException {
-//        VerifyRequest request = new VerifyRequest(phoneNumber, "AParking");
-//        VerifyResponse response = nexmoClient.getVerifyClient().verify(request);
-//        if (response.getStatus() == VerifyStatus.OK) {
-//            return response.getRequestId();
-//        } else {
-//            throw new RuntimeException("Failed to send verification code: " + response.getErrorText());
-//        }
-//    }
-//
-//    @Override
-//    public boolean verifyCode(String requestId, String code) {
-//        try {
-//            CheckResponse response = nexmoClient.getVerifyClient().check(requestId, code);
-//            return response.getStatus() == VerifyStatus.OK;
-//        } catch (IOException | NexmoClientException e) {
-//            throw new RuntimeException("Failed to verify code: " + e.getMessage(), e);
-//        }
-//    }
+
     @Override
     public String register(User user) {
         if (userService.existsByPhone(user.getPhone())) {
@@ -90,6 +66,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException("Failed to send verification code: " + verification.getStatus());
         }
     }
+
+}
+
 //    @Override
 //    public String login(String requestId, String code) {
 //        User user = userService.findByPhone(requestId);
@@ -102,4 +81,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //            throw new RuntimeException("Verification code is incorrect");
 //        }
 //    }
-}
+
+//    @Autowired
+//    public AuthenticationServiceImpl(NexmoClient nexmoClient) {
+//        this.nexmoClient = nexmoClient;
+//    }
+
+//    @Override
+//    public String requestVerificationCode(String phoneNumber) throws IOException, NexmoClientException {
+//        VerifyRequest request = new VerifyRequest(phoneNumber, "AParking");
+//        VerifyResponse response = nexmoClient.getVerifyClient().verify(request);
+//        if (response.getStatus() == VerifyStatus.OK) {
+//            return response.getRequestId();
+//        } else {
+//            throw new RuntimeException("Failed to send verification code: " + response.getErrorText());
+//        }
+//    }
+//
+//    @Override
+//    public boolean verifyCode(String requestId, String code) {
+//        try {
+//            CheckResponse response = nexmoClient.getVerifyClient().check(requestId, code);
+//            return response.getStatus() == VerifyStatus.OK;
+//        } catch (IOException | NexmoClientException e) {
+//            throw new RuntimeException("Failed to verify code: " + e.getMessage(), e);
+//        }
+//    }
