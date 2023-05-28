@@ -45,6 +45,9 @@ public class UserServiceImpl implements UserService {
         if (userService.existsByPhone(userDto.getPhone())) {
             throw new RuntimeException("User with this phone number already exists");
         }
+        if (userDto.cars == null) {
+            throw new RuntimeException("Cars field can't be empty");
+        }
         User newUser = new User();
 
         newUser.setFullName(userDto.getFullName());

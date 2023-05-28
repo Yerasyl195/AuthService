@@ -10,7 +10,7 @@ import java.util.List;
 public class RegistrationRequest {
     private String phone;
     private String fullName;
-    private List<Car> cars;
+    public List<Car> cars;
 
     public RegistrationRequest(String phone, String fullName, List<Car> cars, String username) {
         this.phone = phone;

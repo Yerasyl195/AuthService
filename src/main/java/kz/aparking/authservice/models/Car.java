@@ -2,6 +2,7 @@ package kz.aparking.authservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "cars")
@@ -14,6 +15,7 @@ public class Car {
     private String mark;
 
     @Column(name = "regist_number")
+    @Pattern(regexp = "[A-Z]{0,2}[0-9]{2,3}[A-Z]{1,3}[0-9]{2}", message = "Invalid registration number format")
     private String registNumber;
 
     @JsonIgnore

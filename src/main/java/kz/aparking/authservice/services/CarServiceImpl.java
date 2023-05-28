@@ -1,5 +1,6 @@
 package kz.aparking.authservice.services;
 
+import jakarta.validation.Valid;
 import kz.aparking.authservice.errors.UserNotFoundException;
 import kz.aparking.authservice.jpa.CarRepository;
 import kz.aparking.authservice.jpa.UserRepository;
@@ -36,7 +37,7 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public Car addCarForUser(Long userId, Car car) {
+    public Car addCarForUser(Long userId, @Valid Car car) {
         Optional<User> user = userRepository.findById(userId);
         if(user.isEmpty())
             throw new UserNotFoundException("can't find user with id:"+userId);
