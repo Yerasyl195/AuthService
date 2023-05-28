@@ -3,10 +3,15 @@ package kz.aparking.authservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +30,10 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
+    @NotNull(message = "Birthday cannot be null")
+    @Past(message = "Birthday should be in the past")
+    private LocalDate birthday;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ParkingSession> parkingHistory;
@@ -33,10 +42,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Car> cars;
 
-    public User(Long id, String phone, String fullName, List<Car> cars) {//, List<ParkingHistory> parkingHistory) {
+    public User(Long id, String phone, String fullName, LocalDate birthday, List<Car> cars) {//, List<ParkingHistory> parkingHistory) {
         this.id = id;
         this.phone = phone;
         this.fullName = fullName;
+        this.birthday = birthday;
         this.cars = cars;
     }
 
@@ -108,6 +118,14 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     @Override

@@ -26,7 +26,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'com.twilio.sdk:twilio:9.0.0'
     implementation 'com.nexmo:client'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.nexmo:nexmo-spring-boot-starter:1.1.0'
@@ -38,6 +37,7 @@ dependencies {
     implementation 'javax.persistence:javax.persistence-api:2.2'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+    implementation 'com.twilio.sdk:twilio:9.6.1'
 }
 
 bootBuildImage {

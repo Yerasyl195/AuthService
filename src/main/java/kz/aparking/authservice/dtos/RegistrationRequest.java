@@ -1,10 +1,8 @@
 package kz.aparking.authservice.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import kz.aparking.authservice.models.Car;
-import kz.aparking.authservice.models.ParkingSession;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class RegistrationRequest {
@@ -12,10 +10,13 @@ public class RegistrationRequest {
     private String fullName;
     public List<Car> cars;
 
-    public RegistrationRequest(String phone, String fullName, List<Car> cars, String username) {
+    private LocalDate birthday;
+
+    public RegistrationRequest(String phone, String fullName, List<Car> cars, String username, LocalDate birthday) {
         this.phone = phone;
         this.fullName = fullName;
         this.cars = cars;
+        this.birthday = birthday;
     }
 
     public String getPhone() {
@@ -40,5 +41,13 @@ public class RegistrationRequest {
 
     public void setCars(List<Car> cars) {
         this.cars = cars;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 }

@@ -3,7 +3,6 @@ package kz.aparking.authservice.services;
 import kz.aparking.authservice.dtos.RegistrationRequest;
 import kz.aparking.authservice.errors.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import kz.aparking.authservice.jpa.CarRepository;
 import kz.aparking.authservice.jwt.JwtTokenUtil;
 import kz.aparking.authservice.jpa.ParkingSessionRepository;
 import kz.aparking.authservice.jpa.UserRepository;
@@ -45,13 +44,14 @@ public class UserServiceImpl implements UserService {
         if (userService.existsByPhone(userDto.getPhone())) {
             throw new RuntimeException("User with this phone number already exists");
         }
-        if (userDto.cars == null) {
+        if (userDto.cars == null || userDto.cars.size() == 0) {
             throw new RuntimeException("Cars field can't be empty");
         }
         User newUser = new User();
 
         newUser.setFullName(userDto.getFullName());
         newUser.setPhone(userDto.getPhone());
+        newUser.setBirthday(userDto.getBirthday());
 
         User savedUser = userRepository.save(newUser);
 
@@ -86,6 +86,7 @@ public class UserServiceImpl implements UserService {
         User newUser = optionalUser.get();
         newUser.setPhone(updatedUser.getPhone());
         newUser.setFullName(updatedUser.getFullName());
+        newUser.setBirthday(updatedUser.getBirthday());
 
         return userRepository.save(newUser);
     }

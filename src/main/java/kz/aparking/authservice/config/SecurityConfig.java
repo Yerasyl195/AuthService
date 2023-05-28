@@ -1,5 +1,9 @@
-package kz.aparking.authservice.jwt;
+package kz.aparking.authservice.config;
 
+import kz.aparking.authservice.jwt.JwtAuthenticationEntryPoint;
+import kz.aparking.authservice.jwt.JwtAuthenticationFilter;
+import kz.aparking.authservice.jwt.JwtTokenUtil;
+import kz.aparking.authservice.jwt.JwtUserDetailsService;
 import kz.aparking.authservice.services.TokenBlacklistService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
