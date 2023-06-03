@@ -10,10 +10,12 @@ import kz.aparking.authservice.models.Car;
 import kz.aparking.authservice.models.ParkingSession;
 import kz.aparking.authservice.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,12 +49,20 @@ public class UserServiceImpl implements UserService {
         if (userDto.cars == null || userDto.cars.size() == 0) {
             throw new RuntimeException("Cars field can't be empty");
         }
+
         User newUser = new User();
 
         newUser.setFullName(userDto.getFullName());
         newUser.setPhone(userDto.getPhone());
         newUser.setBirthday(userDto.getBirthday());
+        List<Car> cars = userDto.getCars();
 
+        //checking if there are cars with same regist number in dto
+        Set<String> uniqueNumbers = cars.stream().map(Car::getRegistNumber).collect(Collectors.toSet());
+
+        if (uniqueNumbers.size() != cars.size()) {
+            throw new RuntimeException("User can't have cars with identical registration number");
+        }
         User savedUser = userRepository.save(newUser);
 
         for(Car car : userDto.getCars()) {

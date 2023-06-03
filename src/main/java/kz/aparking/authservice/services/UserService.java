@@ -25,6 +25,4 @@ public interface UserService {
     ParkingSession getLastSessionForUser(Long UserId);
     List<Car> getUserCars(Long userId);
 
-
-
 }

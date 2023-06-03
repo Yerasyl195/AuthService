@@ -56,4 +56,23 @@ public class CarController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("current/user/{id}")
+    public EntityModel<Car> getCurrentCarForUser(@PathVariable Long id) {
+        Car car = carService.getCurrentCarForUser(id);
+
+        EntityModel<Car> entityModel = EntityModel.of(car);
+        WebMvcLinkBuilder link =  linkTo(methodOn(this.getClass()).getAllCars());
+        entityModel.add(link.withRel("all-cars"));
+        return entityModel;
+    }
+
+    @PutMapping("set/current/{carId}")
+    public EntityModel<Car> setCurrentCarForUser(@PathVariable Long carId) {
+        Car car = carService.setCurrentCarForUser(carId);
+        EntityModel<Car> entityModel = EntityModel.of(car);
+        WebMvcLinkBuilder link =  linkTo(methodOn(this.getClass()).getAllCars());
+        entityModel.add(link.withRel("all-cars"));
+        return entityModel;
+    }
+
 }

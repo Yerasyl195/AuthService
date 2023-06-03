@@ -23,15 +23,27 @@ public class Car {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    public Car(Long id, String mark, String registNumber, User user) {
+    @Column(name = "is_current")
+    private Boolean isCurrent;
+
+    public Car(Long id, String mark, String registNumber, User user, Boolean isCurrentCar) {
         this.id = id;
         this.mark = mark;
         this.registNumber = registNumber;
         this.user = user;
+        this.isCurrent = isCurrentCar;
     }
 
     public Car() {
 
+    }
+
+    public Boolean getIsCurrentStatus() {
+        return isCurrent;
+    }
+
+    public void setIsCurrentStatus(Boolean isCurrentCar) {
+        isCurrent = isCurrentCar;
     }
 
     public Long getId() {

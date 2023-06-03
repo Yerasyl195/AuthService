@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,7 @@ public class User implements UserDetails {
 
     @NotNull(message = "Birthday cannot be null")
     @Past(message = "Birthday should be in the past")
+    @Column(name = "birthday")
     private LocalDate birthday;
 
     @JsonIgnore
@@ -62,7 +64,7 @@ public class User implements UserDetails {
     }
 
     public List<Car> getCars() {
-        return cars;
+        return cars != null ? cars : new ArrayList<>();
     }
 
     public String getFullName() {

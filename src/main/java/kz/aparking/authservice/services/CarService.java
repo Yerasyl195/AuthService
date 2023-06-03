@@ -9,4 +9,6 @@ public interface CarService {
     public Car getCarById(Long id);
     public Car addCarForUser(Long userId, Car car);
     public void deleteCar(Long id);
+    Car getCurrentCarForUser(Long userId);
+    Car setCurrentCarForUser(Long carId);
 }
