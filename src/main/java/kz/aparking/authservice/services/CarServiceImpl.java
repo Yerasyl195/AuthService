@@ -53,7 +53,7 @@ public class CarServiceImpl implements CarService{
             throw new RuntimeException("Car with this registration number already exists");
         }
 
-        car.setIsCurrentStatus(false);
+        car.setIsCurrentStatus(userCars.size() == 0);
         car.setUser(user.get());
         return carRepository.save(car);
     }
