@@ -1,5 +1,6 @@
 package kz.aparking.authservice.controllers;
 
+import kz.aparking.authservice.dtos.ApiResponse;
 import kz.aparking.authservice.dtos.AuthenticationRequest;
 import kz.aparking.authservice.dtos.RegistrationRequest;
 import kz.aparking.authservice.dtos.VerificationRequest;
@@ -38,12 +39,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/request")
-    public ResponseEntity<String> requestCode(@RequestBody AuthenticationRequest authRequest) {
+    public ResponseEntity<ApiResponse> requestCode(@RequestBody AuthenticationRequest authRequest) {
         try {
             authenticationService.requestVerificationCode(authRequest.getPhoneNumber());
-            return ResponseEntity.ok("Verification code sent");
+            ApiResponse response = new ApiResponse("Verification code sent");
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            ApiResponse response = new ApiResponse(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
@@ -60,7 +63,8 @@ public class AuthenticationController {
                 return ResponseEntity.ok(Map.of("status", "login", "token", statusAndToken.getToken()));
             }
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            ApiResponse response = new ApiResponse(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }
